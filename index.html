@@ -1,0 +1,825 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12372a">
+
+<title>INNORTO Посадка+</title>
+
+<style>
+:root {
+  --green: #12372a;
+  --green-light: #e7f3eb;
+  --bg: #f3f6f3;
+  --text: #17231d;
+  --muted: #647168;
+  --border: #d8e2da;
+  --red: #a52828;
+  --amber: #946200;
+  --success: #17643a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+header {
+  background: var(--green);
+  color: white;
+  padding: calc(22px + env(safe-area-inset-top)) 18px 22px;
+}
+
+header h1 {
+  font-size: 25px;
+  margin: 0 0 6px;
+}
+
+header p {
+  margin: 0;
+  color: #dcebe1;
+  font-size: 14px;
+}
+
+main {
+  max-width: 680px;
+  margin: auto;
+  padding: 14px 12px calc(30px + env(safe-area-inset-bottom));
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 3px 12px #183d2a08;
+}
+
+.section-title {
+  font-weight: 750;
+  margin: 0 0 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.choice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  min-height: 49px;
+  padding: 10px 8px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.choice:has(input:checked) {
+  background: var(--green-light);
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+
+.choice input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--green);
+}
+
+.sizes {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+label.field {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+input[type="number"] {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px;
+  border: 1px solid #cbd8ce;
+  border-radius: 12px;
+  font: inherit;
+  background: white;
+  color: var(--text);
+}
+
+input:focus-visible,
+button:focus-visible,
+.choice:focus-within {
+  outline: 2px solid #38835c;
+  outline-offset: 2px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.inline {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.inline .choice {
+  flex: 1;
+  min-width: 90px;
+}
+
+.primary {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px;
+  background: var(--green);
+  color: white;
+  font: inherit;
+  font-weight: 800;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.primary:active {
+  background: #245b43;
+}
+
+.result {
+  display: none;
+  margin-top: 14px;
+}
+
+.result.show {
+  display: block;
+}
+
+.result.high {
+  border-color: #e6b0b0;
+}
+
+.result.medium {
+  border-color: #e4cf94;
+}
+
+.risk-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.risk {
+  font-size: 25px;
+  font-weight: 850;
+}
+
+.high .risk {
+  color: var(--red);
+}
+
+.medium .risk {
+  color: var(--amber);
+}
+
+.low .risk {
+  color: var(--success);
+}
+
+.verdict {
+  font-weight: 750;
+  margin: 14px 0;
+}
+
+.result h3 {
+  margin: 15px 0 5px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+
+.result p {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.notes {
+  background: #f3f6f3;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  margin-top: 12px;
+}
+
+.badge {
+  background: #edf2ee;
+  padding: 5px 10px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.secondary {
+  width: 100%;
+  min-height: 48px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+footer {
+  padding: 12px 4px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (min-width: 560px) {
+  .products {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 360px) {
+  .sizes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  header h1 {
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 13px;
+  }
+}
+</style>
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="theme-color" content="#142b25">
+</head>
+
+<body>
+
+<header>
+  <h1>INNORTO Посадка+</h1>
+  <p>Проверка посадки и риска возврата · Ozon / WB</p>
+</header>
+
+<main>
+
+  <section class="card">
+    <p class="section-title">1. Выберите товар</p>
+
+    <div class="grid products" id="products">
+      <label class="choice">
+        <input type="radio" name="product" value="корсет" checked>
+        Корсет
+      </label>
+
+      <label class="choice">
+        <input type="radio" name="product" value="стельки">
+        Стельки
+      </label>
+
+      <label class="choice">
+        <input type="radio" name="product" value="корректор">
+        Корректор
+      </label>
+
+      <label class="choice">
+        <input type="radio" name="product" value="бандаж">
+        Бандаж
+      </label>
+    </div>
+  </section>
+
+  <section class="card">
+    <p class="section-title">2. Размер в заказе Ozon/WB</p>
+    <div class="grid sizes" id="sizes"></div>
+
+    <p class="hint">
+      Выберите размер из заказа покупателя. Приложение проверяет
+      посадку и риск возврата, а не заменяет выбор на маркетплейсе.
+    </p>
+  </section>
+
+  <section class="card">
+    <label class="field" id="measureLabel" for="measure">
+      Замер талии, см
+    </label>
+
+    <input
+      id="measure"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      step="1"
+      placeholder="Введите замер"
+      autocomplete="off"
+    >
+
+    <p class="hint" id="measureHint">
+      Введите фактический замер покупателя.
+    </p>
+
+    <div id="footWidthBlock" hidden style="margin-top:18px">
+      <p class="section-title">Полнота стопы</p>
+
+      <div class="inline">
+        <label class="choice">
+          <input type="radio" name="width" value="узкая">
+          Узкая
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="width" value="средняя" checked>
+          Средняя
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="width" value="широкая">
+          Широкая
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <p class="section-title">3. Задача изделия</p>
+
+    <div class="inline">
+      <label class="choice">
+        <input type="radio" name="goal" value="Фиксация" checked>
+        Фиксация
+      </label>
+
+      <label class="choice">
+        <input type="radio" name="goal" value="Комфорт">
+        Комфорт
+      </label>
+    </div>
+  </section>
+
+  <button type="button" class="primary" id="check">
+    Проверить посадку
+  </button>
+
+  <section class="card result" id="result" aria-live="polite">
+    <div class="risk-row">
+      <span class="section-title">Риск возврата</span>
+      <span class="risk" id="risk">—</span>
+      <span class="badge" id="riskLabel">—</span>
+    </div>
+
+    <p class="verdict" id="verdict"></p>
+
+    <h3>Решение для склада</h3>
+    <p id="action"></p>
+
+    <h3>Дополнительные замечания</h3>
+    <div class="notes" id="notes"></div>
+
+    <button type="button" class="secondary" id="copy">
+      Скопировать результат
+    </button>
+  </section>
+
+  <footer>
+    INNORTO Посадка+ · Внутренний помощник склада.
+    Оценка основана на заданных правилах и требует проверки
+    фактической размерной сетки изделия.
+  </footer>
+
+</main>
+
+<script>
+"use strict";
+
+/*
+ * INNORTO Посадка+
+ * Локальное приложение. Данные на сервер не отправляются.
+ */
+
+const SIZE_RULES = {
+  "корсет": [
+    { min: 60, max: 75, size: "XS" },
+    { min: 76, max: 90, size: "S" },
+    { min: 91, max: 105, size: "M" },
+    { min: 106, max: 120, size: "L" }
+  ],
+
+  "стельки": [
+    { min: 36, max: 38, size: "36–38" },
+    { min: 39, max: 41, size: "39–41" },
+    { min: 42, max: 44, size: "42–44" }
+  ],
+
+  "корректор": [
+    { min: 160, max: 170, size: "S" },
+    { min: 171, max: 180, size: "M" },
+    { min: 181, max: 195, size: "L" }
+  ],
+
+  "бандаж": [
+    { min: 80, max: 95, size: "M" },
+    { min: 96, max: 110, size: "L" },
+    { min: 111, max: 130, size: "XL" }
+  ]
+};
+
+const HINTS = {
+  "корсет": "Замер талии, см (не размер с карточки)",
+  "стельки": "Размер обуви покупателя",
+  "корректор": "Рост, см",
+  "бандаж": "Обхват тела, см (без одежды)"
+};
+
+const $ = id => document.getElementById(id);
+
+let product = "корсет";
+let orderedSize = "XS";
+let lastResultText = "";
+
+function selected(name) {
+  const el = document.querySelector(
+    'input[name="' + name + '"]:checked'
+  );
+
+  return el ? el.value : null;
+}
+
+function findRule(productName, value) {
+  return SIZE_RULES[productName].find(
+    rule => value >= rule.min && value <= rule.max
+  ) || null;
+}
+
+function renderSizes() {
+  const container = $("sizes");
+  container.replaceChildren();
+
+  const sizes = SIZE_RULES[product].map(rule => rule.size);
+
+  if (!sizes.includes(orderedSize)) {
+    orderedSize = sizes[0];
+  }
+
+  sizes.forEach(size => {
+    const label = document.createElement("label");
+    label.className = "choice";
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "orderedSize";
+    radio.value = size;
+    radio.checked = size === orderedSize;
+
+    radio.addEventListener("change", () => {
+      orderedSize = size;
+      $("result").className = "card result";
+    });
+
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(size));
+    container.appendChild(label);
+  });
+
+  $("measureLabel").textContent = HINTS[product];
+
+  $("measure").value = "";
+  $("measure").placeholder =
+    product === "стельки"
+      ? "Например, 40"
+      : "Введите замер числом";
+
+  $("footWidthBlock").hidden = product !== "стельки";
+  $("result").className = "card result";
+}
+
+function getFitAdvice(productName, ordered, value, goal, footWidth) {
+  const notes = [];
+  let checkValue = value;
+
+  if (productName === "бандаж") {
+    checkValue = value + 4;
+
+    notes.push(
+      'Ноу-хау «+4 см»: применяется корректировка замера ' +
+      'для бандажа поверх белья. Правило нужно подтвердить ' +
+      'по фактической инструкции конкретного изделия.'
+    );
+  }
+
+  const rule = findRule(productName, checkValue);
+  const rawRule = findRule(productName, value);
+
+  let risk = 15;
+  let action = "Класть как в заказе Ozon/WB.";
+  let verdict = "Посадка совпадает с выбранным размером.";
+  let measured = "нет";
+
+  if (!rule) {
+    risk = 88;
+
+    verdict =
+      "Замер вне заданной размерной сетки. " +
+      "Посадку нельзя подтвердить автоматически.";
+
+    action =
+      "Не отгружать вслепую. Проверить замер и размерную " +
+      "сетку, связаться с покупателем или поддержкой.";
+
+    notes.push(
+      "Замер находится вне настроенных диапазонов. " +
+      "Это сигнал для ручной проверки, а не доказательство " +
+      "неподходящего размера."
+    );
+
+    return { verdict, action, risk, notes, measured };
+  }
+
+  measured = rule.size;
+
+  const edge = Math.min(
+    checkValue - rule.min,
+    rule.max - checkValue
+  );
+
+  if (measured !== ordered) {
+    risk = 72;
+
+    verdict =
+      "В заказе выбран размер " + ordered +
+      ", а по заданной сетке замеру соответствует " +
+      measured + ".";
+
+    action =
+      "Не подменять размер без согласования. " +
+      "Проверить заказ и при необходимости уточнить выбор у покупателя.";
+
+    notes.push(
+      "Размер по замеру отличается от выбранного. " +
+      "Проверьте, что измерение и размерная сетка относятся " +
+      "к одному и тому же изделию."
+    );
+  } else if (edge <= 3) {
+    risk = 48;
+
+    verdict =
+      "Замер находится у границы диапазона: " +
+      edge + " см до ближайшего края.";
+
+    if (
+      goal === "Комфорт" &&
+      rule.max - checkValue <= 3
+    ) {
+      action =
+        "Для комфортной посадки проверить, допускает ли " +
+        "инструкция соседний больший размер. " +
+        "Не менять размер без согласования.";
+
+    } else if (
+      goal === "Фиксация" &&
+      checkValue - rule.min <= 3
+    ) {
+      action =
+        "Размер у нижней границы диапазона. " +
+        "Проверить требования к фиксации и инструкцию изделия.";
+
+    } else {
+      action =
+        "Размер соответствует сетке, но замер пограничный. " +
+        "Проверить посадку и вложить памятку по использованию.";
+    }
+
+    notes.push(
+      "Пограничный замер увеличивает неопределённость посадки. " +
+      "Сам по себе он не гарантирует возврат."
+    );
+
+  } else {
+    risk = 12;
+
+    verdict =
+      "Замер внутри диапазона. Выбранный размер " +
+      ordered + " соответствует настроенной сетке.";
+
+    action =
+      "Класть как в заказе, без замены.";
+
+    notes.push(
+      "Замер не находится рядом с границей диапазона. " +
+      "Проверьте, что сетка соответствует карточке товара."
+    );
+  }
+
+  if (productName === "стельки") {
+    if (
+      footWidth === "широкая" &&
+      value === rule.max
+    ) {
+      risk = Math.min(90, risk + 20);
+
+      action =
+        "Широкая стопа и верхняя граница диапазона: " +
+        "проверить полноту, ширину и конструкцию стельки. " +
+        "При необходимости уточнить выбор до отправки.";
+
+      notes.push(
+        "Размер обуви не описывает полноту стопы. " +
+        "Проверьте ширину стельки и рекомендации производителя."
+      );
+
+    } else if (
+      footWidth === "узкая" &&
+      value === rule.min
+    ) {
+      notes.push(
+        "Узкая стопа у нижней границы диапазона. " +
+        "Проверьте допустимость подрезки по инструкции производителя."
+      );
+    }
+  }
+
+  if (
+    productName === "корсет" &&
+    goal === "Фиксация" &&
+    rawRule &&
+    measured === ordered
+  ) {
+    notes.push(
+      "Для корсета особенно важно следовать таблице замеров " +
+      "и инструкции производителя. Не уменьшайте размер " +
+      "автоматически ради более сильной фиксации."
+    );
+  }
+
+  return { verdict, action, risk, notes, measured };
+}
+
+function showResult(fit) {
+  const result = $("result");
+
+  result.className = "card result show " +
+    (fit.risk >= 70
+      ? "high"
+      : fit.risk >= 40
+        ? "medium"
+        : "low");
+
+  $("risk").textContent = fit.risk + "/100";
+
+  $("riskLabel").textContent =
+    fit.risk >= 70
+      ? "Высокий"
+      : fit.risk >= 40
+        ? "Повышенный"
+        : "Низкий";
+
+  $("verdict").textContent = fit.verdict;
+  $("action").textContent = fit.action;
+
+  $("notes").textContent =
+    fit.notes.length
+      ? fit.notes.join("\n\n")
+      : "Дополнительных замечаний нет.";
+
+  lastResultText =
+    "INNORTO Посадка+\n" +
+    "Товар: " + product + "\n" +
+    "Размер в заказе: " + orderedSize + "\n" +
+    "Замер: " + $("measure").value + "\n" +
+    "Задача: " + selected("goal") + "\n" +
+    "Риск возврата: " + fit.risk + "/100\n" +
+    "Результат: " + fit.verdict + "\n" +
+    "Рекомендация складу: " + fit.action + "\n" +
+    "Замечания: " + fit.notes.join("; ");
+
+  result.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+document.querySelectorAll('input[name="product"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    product = selected("product");
+    renderSizes();
+  });
+});
+
+$("check").addEventListener("click", () => {
+  const raw = $("measure").value.trim();
+
+  if (!/^\d+$/.test(raw)) {
+    showResult({
+      risk: 88,
+      verdict: "Введите положительный замер целым числом.",
+      action: "Проверить ввод и единицы измерения.",
+      notes: ["Не используйте артикул или размер с кнопки маркетплейса."],
+      measured: "нет"
+    });
+
+    return;
+  }
+
+  const value = Number(raw);
+
+  if (!Number.isSafeInteger(value) || value <= 0) {
+    showResult({
+      risk: 88,
+      verdict: "Замер указан некорректно.",
+      action: "Введите положительное целое число.",
+      notes: [],
+      measured: "нет"
+    });
+
+    return;
+  }
+
+  const fit = getFitAdvice(
+    product,
+    selected("orderedSize") || orderedSize,
+    value,
+    selected("goal") || "Фиксация",
+    selected("width") || "средняя"
+  );
+
+  showResult(fit);
+});
+
+$("copy").addEventListener("click", async () => {
+  if (!lastResultText) return;
+
+  try {
+    await navigator.clipboard.writeText(lastResultText);
+    $("copy").textContent = "Результат скопирован";
+  } catch {
+    const textarea = document.createElement("textarea");
+    textarea.value = lastResultText;
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    const copied = document.execCommand("copy");
+    textarea.remove();
+
+    $("copy").textContent = copied
+      ? "Результат скопирован"
+      : "Не удалось скопировать";
+  }
+
+  setTimeout(() => {
+    $("copy").textContent = "Скопировать результат";
+  }, 2000);
+});
+
+renderSizes();
+</script>
+
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(console.error);
+  });
+}
+</script>
+</body>
+</html>
